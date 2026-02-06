@@ -188,36 +188,137 @@ Use it inside `base.html`:
 ---
 
 ## 5. Static Files and the `{% static %}` Tag
+This guide explains how to properly use static files in Django, including CSS, JavaScript, fonts, and images.
 
-Static files include CSS, JavaScript, and images.
+Topics covered:
 
-### Create Static Folder
+1. Creating the Static Folder Structure
+2. Configuring Static Settings in `settings.py`
+3. Loading Static Files in Templates
+4. Linking CSS Files
+5. Linking JavaScript Files
+6. Using Images in Templates
+7. Using Custom Fonts
+
+---
+
+## 1. Creating the Static Folder Structure
+
+Inside your Django app (example: `main`), create a static directory like this:
 
 ```
 main/
 │
 ├── static/
 │   └── main/
-│       └── style.css
+│       ├── css/
+│       │   └── style.css
+│       ├── js/
+│       │   └── script.js
+│       ├── images/
+│       │   └── logo.png
+│       └── fonts/
+│           └── custom-font.woff2
 ```
 
-### Add CSS File
+The second `main` folder is important. It prevents name conflicts between apps.
 
-```css
-body {
-    font-family: Arial;
-    background-color: #f2f2f2;
-}
+---
+
+## 2. Configuring Static Settings in `settings.py`
+
+Open `settings.py` and ensure these settings exist:
+
+```python
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # Optional global static folder
+]
+
+STATIC_ROOT = BASE_DIR / "staticfiles"  # Used when deploying
 ```
 
-### Load Static in Template
+`STATICFILES_DIRS` is optional and used if you keep a project-level static folder.
 
-At the top of `base.html`:
+Make sure `'django.contrib.staticfiles'` is included in `INSTALLED_APPS` (it is by default).
+
+---
+
+## 3. Loading Static Files in Templates
+
+At the top of every HTML file where you want to use static files, add:
 
 ```html
 {% load static %}
-<link rel="stylesheet" href="{% static 'main/style.css' %}">
+```
+
+This enables Django’s static template tag.
+
+---
+
+## 4. Linking CSS Files
+
+Inside your base template (`base.html`):
+
+```html
+{% load static %}
+<link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+```
+
+Now Django will correctly serve the CSS file.
+
+---
+
+## 5. Linking JavaScript Files
+
+Place this before the closing `</body>` tag:
+
+```html
+<script src="{% static 'main/js/script.js' %}"></script>
 ```
 
 ---
 
+## 6. Using Images in Templates
+
+To display an image:
+
+```html
+<img src="{% static 'main/images/logo.png' %}" alt="Logo">
+```
+
+---
+
+## 7. Using Custom Fonts
+
+Define fonts inside your CSS file (`style.css`):
+
+```css
+@font-face {
+    font-family: 'CustomFont';
+    src: url('../fonts/custom-font.woff2') format('woff2');
+}
+
+body {
+    font-family: 'CustomFont', Arial, sans-serif;
+}
+```
+
+Make sure the path correctly points from the CSS folder to the fonts folder.
+
+---
+
+## 8. Static Files URL Behavior in Development
+
+When `DEBUG = True`, Django automatically serves static files.
+
+Run the server:
+
+```bash
+python manage.py runserver
+```
+
+Then open the browser and your CSS, JS, and images will load correctly.
+
+---
