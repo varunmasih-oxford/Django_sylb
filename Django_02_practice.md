@@ -1,25 +1,37 @@
 # Make it saperatly
-
 # Django Assignment: Project-Level and Multiple Apps
-Assignment Objective
+
+## Objective
 
 Create a Django project that demonstrates your understanding of:
 
-Django projects and apps
-App registration
-Project-level URL routing
-App-level URL routing
-Views
-HttpResponse
-Connecting URLs to views
-Testing multiple routes in the browser
+- Django Projects
+- Django Apps
+- App Registration
+- URL Routing
+- Project-level URLs
+- App-level URLs
+- Views
+- `HttpResponse`
+- `include()`
 
-You will create one Django project, two Django apps (app1 and app2), and a total of 15 routes and 15 views.
+You will create:
 
-Part 1: Create the Django Project
+- 1 Django Project
+- 2 Django Apps: `app1` and `app2`
+- 5 Project-level URLs and Views
+- 5 `app1` URLs and Views
+- 5 `app2` URLs and Views
 
-Create a project named:
+**Total: 15 URLs and 15 Views**
 
+---
+
+## Part 1: Create the Django Project
+
+Create a Django project named `myproject`.
+
+```bash
 django-admin startproject myproject
 cd myproject
 
@@ -29,19 +41,19 @@ Run the development server:
 python manage.py runserver
 
 
-Verify that Django is working by opening:
+Open the following URL in your browser:
 
 http://127.0.0.1:8000/
 
 Part 2: Create Two Django Apps
 
-Inside the project directory, create:
+Create two apps named app1 and app2.
 
 python manage.py startapp app1
 python manage.py startapp app2
 
 
-Your structure should look similar to:
+The project structure should look similar to:
 
 myproject/
 │
@@ -51,6 +63,7 @@ myproject/
 │   ├── __init__.py
 │   ├── settings.py
 │   ├── urls.py
+│   ├── views.py
 │   ├── asgi.py
 │   └── wsgi.py
 │
@@ -61,6 +74,7 @@ myproject/
 │   ├── apps.py
 │   ├── models.py
 │   ├── tests.py
+│   ├── urls.py
 │   └── views.py
 │
 └── app2/
@@ -70,6 +84,7 @@ myproject/
     ├── apps.py
     ├── models.py
     ├── tests.py
+    ├── urls.py
     └── views.py
 
 Part 3: Register Both Apps
@@ -79,7 +94,7 @@ Open:
 myproject/settings.py
 
 
-Add both applications to INSTALLED_APPS:
+Add app1 and app2 to INSTALLED_APPS.
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -95,18 +110,16 @@ INSTALLED_APPS = [
 
 Requirement
 
-Both app1 and app2 must be successfully registered.
+Both app1 and app2 must be registered successfully.
 
-Part 4: Create 5 Project-Level Routes and 5 Views
-
-For this part, you will create 5 views directly in the project-level myproject package.
+Part 4: Project-Level Views and URLs
 
 Create:
 
 myproject/views.py
 
 
-You need to create these five views:
+Create 5 views:
 
 home
 about
@@ -114,9 +127,9 @@ contact
 services
 profile
 
-Each view should return a different HttpResponse.
+Each view must return a different HttpResponse.
 
-For example:
+Example:
 
 from django.http import HttpResponse
 
@@ -124,7 +137,7 @@ def home(request):
     return HttpResponse("This is the Home Page")
 
 
-Create the remaining four views yourself.
+Create the other four views in the same way.
 
 Project-Level URLs
 
@@ -133,9 +146,9 @@ Open:
 myproject/urls.py
 
 
-Create 5 routes that connect to the 5 project-level views.
+Create 5 project-level routes.
 
-Your routes should be:
+Required routes:
 
 /
  /about/
@@ -143,28 +156,23 @@ Your routes should be:
 /services/
 /profile/
 
-Expected Result
-Route	View
+
+The routes should be connected as follows:
+
+URL	View
 /	home
 /about/	about
 /contact/	contact
 /services/	services
 /profile/	profile
-Part 5: Create 5 URLs and 5 Views in app1
+Part 5: App1 Views and URLs
 
-Now work inside app1.
-
-Create:
-
-app1/urls.py
-
-
-Create 5 views in:
+Create 5 views inside:
 
 app1/views.py
 
 
-Use the following view names:
+Required view names:
 
 dashboard
 students
@@ -172,9 +180,7 @@ courses
 teachers
 results
 
-Each view should return a different HttpResponse.
-
-For example:
+Example:
 
 from django.http import HttpResponse
 
@@ -182,70 +188,72 @@ def dashboard(request):
     return HttpResponse("App1 Dashboard")
 
 
-Create the other four views in the same way.
+Create the remaining four views in the same way.
 
 App1 URLs
 
-Create 5 routes in:
+Create:
 
 app1/urls.py
 
 
-Use these routes:
+Create the following 5 routes:
 
-app1/dashboard/
-app1/students/
-app1/courses/
-app1/teachers/
-app1/results/
+dashboard/
+students/
+courses/
+teachers/
+results/
+
+
+The final URLs should be:
+
+/app1/dashboard/
+/app1/students/
+/app1/courses/
+/app1/teachers/
+/app1/results/
 
 
 Connect each URL to its corresponding view.
 
-Part 6: Connect app1 to the Project
+Part 6: Connect App1 to the Project
 
 Open:
 
 myproject/urls.py
 
 
-Use include() to connect the app1 URLs.
+Use include() to connect app1/urls.py.
 
-Conceptually, the project should route:
+The routing should work like this:
 
-app1/... → app1/urls.py
+Browser
+   ↓
+myproject/urls.py
+   ↓
+app1/urls.py
+   ↓
+app1 view
+   ↓
+HttpResponse
 
 
-For example, when a user visits:
+For example:
 
 http://127.0.0.1:8000/app1/dashboard/
 
 
-Django should:
+should display the response from the dashboard view.
 
-myproject/urls.py
-        ↓
-app1/urls.py
-        ↓
-dashboard view
-        ↓
-HttpResponse
+Part 7: App2 Views and URLs
 
-Part 7: Create 5 URLs and 5 Views in app2
-
-Now work inside app2.
-
-Create:
-
-app2/urls.py
-
-
-Create 5 views in:
+Create 5 views inside:
 
 app2/views.py
 
 
-Use these view names:
+Required view names:
 
 home
 products
@@ -253,61 +261,34 @@ orders
 customers
 reports
 
-Each view should return a different HttpResponse.
+Example:
+
+from django.http import HttpResponse
+
+def home(request):
+    return HttpResponse("App2 Home Page")
+
+
+Create the remaining four views in the same way.
 
 App2 URLs
 
-Create 5 routes:
+Create:
 
-app2/home/
-app2/products/
-app2/orders/
-app2/customers/
-app2/reports/
+app2/urls.py
 
 
-Connect each URL to the appropriate view.
+Create the following 5 routes:
 
-Part 8: Connect app2 to the Project
-
-Use include() in:
-
-myproject/urls.py
-
-
-to connect app2/urls.py.
-
-The routing should work like:
-
-app2/... → app2/urls.py
+home/
+products/
+orders/
+customers/
+reports/
 
 
-For example:
+The final URLs should be:
 
-http://127.0.0.1:8000/app2/products/
-
-
-should execute the products view from app2.
-
-Final Route Requirements
-
-Your project must contain exactly these groups of routes.
-
-Project-Level — 5 Routes
-/
-/about/
-/contact/
-/services/
-/profile/
-
-App1 — 5 Routes
-/app1/dashboard/
-/app1/students/
-/app1/courses/
-/app1/teachers/
-/app1/results/
-
-App2 — 5 Routes
 /app2/home/
 /app2/products/
 /app2/orders/
@@ -315,35 +296,116 @@ App2 — 5 Routes
 /app2/reports/
 
 
-Total: 15 routes and 15 views.
+Connect each URL to its corresponding view.
+
+Part 8: Connect App2 to the Project
+
+Open:
+
+myproject/urls.py
+
+
+Use include() to connect app2/urls.py.
+
+The routing should work like this:
+
+Browser
+   ↓
+myproject/urls.py
+   ↓
+app2/urls.py
+   ↓
+app2 view
+   ↓
+HttpResponse
+
+
+For example:
+
+http://127.0.0.1:8000/app2/products/
+
+
+should display the response from the products view.
+
+Final Route Requirements
+Project-Level Routes — 5
+/
+/about/
+/contact/
+/services/
+/profile/
+
+App1 Routes — 5
+/app1/dashboard/
+/app1/students/
+/app1/courses/
+/app1/teachers/
+/app1/results/
+
+App2 Routes — 5
+/app2/home/
+/app2/products/
+/app2/orders/
+/app2/customers/
+/app2/reports/
+
+Total
+5 Project Views
++
+5 App1 Views
++
+5 App2 Views
+=
+15 Views
+
+5 Project URLs
++
+5 App1 URLs
++
+5 App2 URLs
+=
+15 URLs
 
 Submission Requirements
-
-Submit the complete Django project with:
-
- Django project named myproject
- app1 created
- app2 created
- Both apps registered in settings.py
- myproject/views.py created
- 5 project-level views
- 5 project-level URLs
- app1/views.py containing 5 views
- app1/urls.py containing 5 URLs
- app2/views.py containing 5 views
- app2/urls.py containing 5 URLs
- app1 connected using include()
- app2 connected using include()
- All 15 URLs tested in the browser
- Each URL displays the correct HttpResponse
+ Create Django project myproject
+ Create app1
+ Create app2
+ Register app1 in settings.py
+ Register app2 in settings.py
+ Create myproject/views.py
+ Create 5 project-level views
+ Create 5 project-level URLs
+ Create 5 views in app1
+ Create 5 URLs in app1/urls.py
+ Create 5 views in app2
+ Create 5 URLs in app2/urls.py
+ Connect app1 using include()
+ Connect app2 using include()
+ Test all 15 URLs in the browser
+ Make sure every URL displays a different HttpResponse
 Bonus Challenge
 
-Add a unique message to every view. For example:
+Give every view a unique response.
 
-Welcome to the Home Page
-Welcome to the About Page
-Welcome to the Students Page
-Welcome to the Products Page
+For example:
+
+Home Page
+About Page
+Contact Page
+Services Page
+Profile Page
+
+App1 Dashboard
+App1 Students
+App1 Courses
+App1 Teachers
+App1 Results
+
+App2 Home
+App2 Products
+App2 Orders
+App2 Customers
+App2 Reports
 
 
-This will make it easy to demonstrate that each URL is connected to the correct view.
+This will make it easy to verify that every URL is connected to the correct view.
